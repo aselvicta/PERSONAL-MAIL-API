@@ -2,7 +2,7 @@
 {% from "_button.html" import button %}
 {% block preheader %}Confirm your email address for {{ app_name }}{% endblock %}
 {% block content %}
-<h1 style="margin:0 0 16px;font-size:20px;">Confirm your email address</h1>
+<h1 style="margin:0 0 16px;font-size:22px;line-height:1.35;font-weight:600;color:#1c1917;">Confirm your email address</h1>
 <p style="margin:0 0 16px;">Hello{% if name %} {{ name }}{% endif %},</p>
 <p style="margin:0 0 16px;">Please confirm that this is your email address for {{ app_name }}.</p>
 {% if verification_url %}{{ button(verification_url, "Verify email address") }}{% endif %}

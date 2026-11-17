@@ -1,10 +1,12 @@
-{% macro button(url, label) -%}
-<table role="presentation" cellpadding="0" cellspacing="0" style="margin:24px 0;">
+{% macro button(url, label, show_link=True) -%}
+<table role="presentation" cellpadding="0" cellspacing="0" style="margin:28px 0 {{ '24px' if show_link else '12px' }};">
   <tr>
-    <td style="border-radius:6px;background-color:#2563eb;">
-      <a href="{{ url }}" target="_blank" rel="noopener" style="display:inline-block;padding:12px 24px;font-size:15px;font-weight:600;color:#ffffff;text-decoration:none;border-radius:6px;">{{ label }}</a>
+    <td style="border-radius:6px;background-color:#1c1917;">
+      <a href="{{ url }}" target="_blank" rel="noopener" style="display:inline-block;padding:12px 22px;font-size:14px;font-weight:600;line-height:1;color:#ffffff;text-decoration:none;border-radius:6px;">{{ label }}</a>
     </td>
   </tr>
 </table>
-<p style="margin:0 0 16px;font-size:13px;color:#52606d;">If the button does not work, copy this link into your browser:<br><a href="{{ url }}" style="color:#2563eb;word-break:break-all;">{{ url }}</a></p>
+{% if show_link %}
+<p style="margin:0 0 16px;font-size:13px;line-height:1.6;color:#78716c;">If the button does not work, copy this link into your browser:<br><a href="{{ url }}" style="color:#57534e;word-break:break-all;">{{ url }}</a></p>
+{% endif %}
 {%- endmacro %}
