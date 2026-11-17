@@ -86,3 +86,10 @@ def test_origin_normalization(raw: str, expected: str) -> None:
 def test_invalid_origins_are_rejected(raw: str) -> None:
     with pytest.raises(ValueError):
         normalize_origin(raw)
+
+
+def test_hidden_attribute_wins_over_css_display(client: TestClient) -> None:
+    # .card/.layout set display:grid, which would otherwise override [hidden]
+    # and show the signed-in views under the login form.
+    css = client.get("/admin/assets/admin.css").text
+    assert "[hidden] { display: none !important; }" in css
