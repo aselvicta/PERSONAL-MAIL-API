@@ -1,0 +1,13 @@
+New contact form message
+
+From:     {{ sender_name }}
+Email:    {{ sender_email }}
+Subject:  {{ subject }}
+Received: {{ submitted_at }}
+Project:  {{ project_name }}
+
+Message:
+{{ message }}
+
+--
+Reply to this email to respond directly to {{ sender_name }}.

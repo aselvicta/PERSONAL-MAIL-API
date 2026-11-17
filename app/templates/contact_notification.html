@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block preheader %}New message from {{ sender_name }}: {{ subject }}{% endblock %}
+{% block content %}
+<h1 style="margin:0 0 16px;font-size:20px;">New contact form message</h1>
+<table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 20px;font-size:14px;">
+  <tr><td style="padding:6px 0;width:110px;color:#52606d;vertical-align:top;">From</td><td style="padding:6px 0;"><strong>{{ sender_name }}</strong></td></tr>
+  <tr><td style="padding:6px 0;color:#52606d;vertical-align:top;">Email</td><td style="padding:6px 0;"><a href="mailto:{{ sender_email }}" style="color:#2563eb;">{{ sender_email }}</a></td></tr>
+  <tr><td style="padding:6px 0;color:#52606d;vertical-align:top;">Subject</td><td style="padding:6px 0;">{{ subject }}</td></tr>
+  <tr><td style="padding:6px 0;color:#52606d;vertical-align:top;">Received</td><td style="padding:6px 0;">{{ submitted_at }}</td></tr>
+  <tr><td style="padding:6px 0;color:#52606d;vertical-align:top;">Project</td><td style="padding:6px 0;">{{ project_name }}</td></tr>
+</table>
+<div style="padding:16px;background-color:#f8f9fa;border-left:3px solid #2563eb;border-radius:4px;white-space:pre-wrap;word-wrap:break-word;">{{ message }}</div>
+<p style="margin:20px 0 0;font-size:13px;color:#52606d;">Reply to this email to respond directly to {{ sender_name }}.</p>
+{% endblock %}
+{% block footer %}Sent by Personal Mail API on behalf of {{ project_name }}.{% endblock %}

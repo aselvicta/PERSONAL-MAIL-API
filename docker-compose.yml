@@ -1,0 +1,44 @@
+# Local development and self-hosting with Docker.
+#
+#   cp .env.example .env    # fill in RESEND_API_KEY, DEFAULT_FROM_EMAIL, JWT_SECRET_KEY
+#   docker compose up --build
+#
+# The API runs on http://localhost:8000 (docs at /docs). PostgreSQL runs in a
+# container, exposed on host port 5433 for local tools and the test suite.
+# In production, point DATABASE_URL at Supabase instead and drop the db service.
+
+services:
+  db:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: personal_mail
+    ports:
+      - "5433:5432"
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+      - ./docker/postgres/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d personal_mail"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  api:
+    build: .
+    env_file: .env
+    environment:
+      # Inside the compose network the database is reachable as "db:5432".
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/personal_mail
+      DATABASE_SSL_MODE: disable
+      APP_ENV: ${APP_ENV:-development}
+      WEB_CONCURRENCY: "1"
+    ports:
+      - "8000:8000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+volumes:
+  pgdata:

@@ -1,0 +1,7 @@
+Welcome to {{ app_name }}{% if name %}, {{ name }}{% endif %}!
+
+{% if message %}{{ message }}{% else %}We're glad to have you on board. Your account is ready to use.{% endif %}
+{% if action_url %}
+{{ action_text or "Get started" }}: {{ action_url }}
+{% endif %}
+The {{ app_name }} team

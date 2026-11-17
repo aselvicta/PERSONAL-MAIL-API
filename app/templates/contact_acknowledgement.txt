@@ -1,0 +1,9 @@
+Hello,
+
+Thank you for contacting {{ project_name }}. Your message has been received and you will get a reply as soon as possible.
+
+Best regards,
+{{ project_name }}
+
+--
+You are receiving this because this address was entered in a contact form on {{ project_name }}. If that was not you, you can ignore this email.

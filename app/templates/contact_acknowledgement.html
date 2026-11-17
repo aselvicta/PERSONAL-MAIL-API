@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block preheader %}Thanks for getting in touch.{% endblock %}
+{% block content %}
+<h1 style="margin:0 0 16px;font-size:20px;">Thanks for your message</h1>
+<p style="margin:0 0 16px;">Hello,</p>
+<p style="margin:0 0 16px;">Thank you for contacting {{ project_name }}. Your message has been received and you will get a reply as soon as possible.</p>
+<p style="margin:0;">Best regards,<br>{{ project_name }}</p>
+{% endblock %}
+{% block footer %}You are receiving this because this address was entered in a contact form on {{ project_name }}. If that was not you, you can ignore this email.{% endblock %}

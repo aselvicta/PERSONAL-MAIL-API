@@ -1,0 +1,11 @@
+Confirm your email address for {{ app_name }}
+
+Hello{% if name %} {{ name }}{% endif %},
+
+Please confirm that this is your email address for {{ app_name }}.
+{% if verification_url %}
+Verify: {{ verification_url }}
+{% endif %}{% if code %}
+Verification code: {{ code }}
+{% endif %}
+This expires in {{ expires_in_minutes or 60 }} minutes. If you did not create an account, you can ignore this email.

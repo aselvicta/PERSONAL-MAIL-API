@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% from "_button.html" import button %}
+{% block preheader %}Confirm your email address for {{ app_name }}{% endblock %}
+{% block content %}
+<h1 style="margin:0 0 16px;font-size:20px;">Confirm your email address</h1>
+<p style="margin:0 0 16px;">Hello{% if name %} {{ name }}{% endif %},</p>
+<p style="margin:0 0 16px;">Please confirm that this is your email address for {{ app_name }}.</p>
+{% if verification_url %}{{ button(verification_url, "Verify email address") }}{% endif %}
+{% if code %}
+<p style="margin:0 0 8px;">Or enter this verification code:</p>
+<p style="margin:0 0 20px;font-size:28px;font-weight:700;letter-spacing:0.2em;font-family:'SFMono-Regular',Consolas,monospace;">{{ code }}</p>
+{% endif %}
+<p style="margin:0;">This {% if code and not verification_url %}code{% else %}link{% endif %} expires in {{ expires_in_minutes or 60 }} minutes. If you did not create an account, you can ignore this email.</p>
+{% endblock %}

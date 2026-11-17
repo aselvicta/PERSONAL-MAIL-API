@@ -1,0 +1,52 @@
+# Render Blueprint: https://render.com/docs/blueprint-spec
+# The database is Supabase PostgreSQL. Do NOT create a Render database.
+# Values marked `sync: false` are entered in the Render dashboard; they are
+# never committed.
+services:
+  - type: web
+    name: personal-mail-api
+    runtime: docker
+    dockerfilePath: ./Dockerfile
+    # Free plan: Docker is supported; the service sleeps after ~15 min idle.
+    plan: free
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: LOG_LEVEL
+        value: INFO
+      - key: DOCS_ENABLED
+        value: "true"
+      # One worker fits comfortably in the free plan's 512 MB.
+      - key: WEB_CONCURRENCY
+        value: "1"
+      # Render's proxy appends the client IP to X-Forwarded-For.
+      - key: TRUSTED_PROXY_COUNT
+        value: "1"
+      # Migrations run once in scripts/start.sh, guarded by an advisory lock.
+      # On paid plans you may instead set RUN_MIGRATIONS=false and use
+      # preDeployCommand: alembic upgrade head
+      - key: RUN_MIGRATIONS
+        value: "true"
+      - key: DATABASE_URL
+        sync: false
+      - key: RESEND_API_KEY
+        sync: false
+      - key: RESEND_WEBHOOK_SECRET
+        sync: false
+      - key: DEFAULT_FROM_EMAIL
+        sync: false
+      - key: DEFAULT_FROM_NAME
+        value: Personal Mail API
+      - key: ALLOWED_SENDER_DOMAINS
+        sync: false
+      - key: JWT_SECRET_KEY
+        generateValue: true
+      # First administrator, created/updated at every start (no shell needed).
+      - key: ADMIN_EMAIL
+        sync: false
+      - key: ADMIN_PASSWORD
+        sync: false
+      - key: TURNSTILE_SECRET_KEY
+        sync: false

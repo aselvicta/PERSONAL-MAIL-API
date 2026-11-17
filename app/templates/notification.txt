@@ -1,0 +1,8 @@
+[{{ notification_type }}] {{ title }}
+
+{{ message }}
+{% if details %}
+{% for key, value in details.items() %}
+{{ key }}: {{ value }}
+{%- endfor %}
+{% endif %}
