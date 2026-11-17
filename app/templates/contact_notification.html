@@ -2,7 +2,7 @@
 {% from "_button.html" import button %}
 {% block preheader %}{{ sender_name }}: {{ message[:120] }}{% endblock %}
 {% block content %}
-<p style="margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#a8a29e;">New message</p>
+<p style="margin:0 0 6px;font-size:12px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:#78716c;">New message</p>
 <h1 style="margin:0 0 24px;font-size:22px;line-height:1.35;font-weight:600;color:#1c1917;">{{ subject }}</h1>
 
 <table role="presentation" cellpadding="0" cellspacing="0" width="100%" style="margin:0 0 28px;">
@@ -14,14 +14,14 @@
     </td>
     <td style="vertical-align:middle;font-size:14px;line-height:1.45;">
       <span style="font-weight:600;color:#1c1917;">{{ sender_name }}</span><br>
-      <a href="mailto:{{ sender_email }}" style="color:#78716c;text-decoration:none;">{{ sender_email }}</a>
+      <a href="mailto:{{ sender_email }}" style="color:#57534e;text-decoration:none;">{{ sender_email }}</a>
     </td>
-    <td align="right" style="vertical-align:middle;font-size:13px;color:#a8a29e;white-space:nowrap;">{{ submitted_at }}</td>
+    <td align="right" style="vertical-align:middle;font-size:13px;color:#78716c;white-space:nowrap;">{{ submitted_at }}</td>
   </tr>
 </table>
 
-<div style="margin:0;padding:24px 0;border-top:1px solid #f0efed;border-bottom:1px solid #f0efed;font-size:15px;line-height:1.7;color:#292524;white-space:pre-wrap;word-wrap:break-word;">{{ message }}</div>
+<div style="margin:0;padding:24px 0;border-top:1px solid #e7e5e4;border-bottom:1px solid #e7e5e4;font-size:15px;line-height:1.7;color:#292524;white-space:pre-wrap;word-wrap:break-word;">{{ message }}</div>
 
 {{ button("mailto:" ~ sender_email ~ "?subject=" ~ ("Re: " ~ subject) | urlencode, "Reply to " ~ sender_name, show_link=False) }}
-<p style="margin:0;font-size:13px;color:#a8a29e;">You can also reply to this email directly.</p>
+<p style="margin:0;font-size:13px;color:#78716c;">You can also reply to this email directly.</p>
 {% endblock %}
