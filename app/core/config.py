@@ -38,6 +38,8 @@ class Settings(BaseSettings):
     APP_VERSION: str = "1.0.0"
     LOG_LEVEL: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
     DOCS_ENABLED: bool = True
+    # Built-in admin web page at /admin (login + project management).
+    ADMIN_UI_ENABLED: bool = True
 
     # --- Database (Supabase PostgreSQL in production) -----------------------
     DATABASE_URL: SecretStr

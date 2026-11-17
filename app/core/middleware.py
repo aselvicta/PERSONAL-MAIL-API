@@ -131,6 +131,13 @@ class PublicCORSMiddleware:
         await self.app(scope, receive, send_with_cors)
 
 
+# Built-in admin UI (/admin): same-origin only, no inline scripts or styles.
+ADMIN_UI_CSP = (
+    "default-src 'none'; script-src 'self'; style-src 'self'; connect-src 'self'; "
+    "img-src 'self' data:; form-action 'self'; base-uri 'none'; frame-ancestors 'none'"
+)
+
+
 class SecurityHeadersMiddleware:
     """Conservative headers for a JSON API."""
 
@@ -142,11 +149,15 @@ class SecurityHeadersMiddleware:
         if scope["type"] != "http":
             await self.app(scope, receive, send)
             return
-        docs = scope["path"] in {"/docs", "/redoc"}
+        path = scope["path"]
+        docs = path in {"/docs", "/redoc"}
+        admin_ui = path == "/admin" or path.startswith("/admin/")
 
         async def send_with_headers(message: Message) -> None:
             if message["type"] == "http.response.start":
                 headers = MutableHeaders(scope=message)
+                if admin_ui:
+                    headers.setdefault("Content-Security-Policy", ADMIN_UI_CSP)
                 headers.setdefault("X-Content-Type-Options", "nosniff")
                 headers.setdefault("X-Frame-Options", "DENY")
                 headers.setdefault("Referrer-Policy", "no-referrer")

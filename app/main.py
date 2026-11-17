@@ -9,6 +9,7 @@ from contextlib import asynccontextmanager
 from fastapi import APIRouter, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from app.admin_ui import mount_admin_ui
 from app.api import health
 from app.api.v1 import auth, contact, emails, notifications, projects, webhooks
 from app.core.config import Settings, get_settings
@@ -96,6 +97,8 @@ def create_app(settings: Settings | None = None) -> FastAPI:
         api_v1.include_router(module.router)
     app.include_router(api_v1)
     app.include_router(health.router)
+    if settings.ADMIN_UI_ENABLED:
+        mount_admin_ui(app)
     return app
 
 

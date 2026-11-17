@@ -32,6 +32,12 @@ def normalize_origin(value: str) -> str:
         raise ValueError("origin must look like https://example.com")
     if parts.path or parts.query or parts.fragment or parts.username:
         raise ValueError("origin must not include a path, query or credentials")
+    try:
+        parts.port  # noqa: B018  # raises ValueError for a malformed port
+    except ValueError:
+        raise ValueError("origin has an invalid port") from None
+    if value.endswith(":"):
+        raise ValueError("origin has an invalid port")
     return value
 
 

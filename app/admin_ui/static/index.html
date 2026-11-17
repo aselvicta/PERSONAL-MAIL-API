@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>Personal Mail API · Admin</title>
+  <link rel="icon" href="data:,">
+  <link rel="stylesheet" href="/admin/assets/admin.css">
+  <script src="/admin/assets/admin.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">Personal Mail API <span class="muted">admin</span></div>
+    <div class="topbar-right">
+      <span id="whoami" class="muted"></span>
+      <button id="logout" class="btn btn-ghost" hidden>Log out</button>
+    </div>
+  </header>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+
+  <!-- Login -->
+  <main id="login-view" class="center" hidden>
+    <form id="login-form" class="card login-card">
+      <h1>Sign in</h1>
+      <p class="muted">Use the ADMIN_EMAIL and ADMIN_PASSWORD configured on the server.</p>
+      <label>Email <input name="email" type="email" autocomplete="username" required></label>
+      <label>Password <input name="password" type="password" autocomplete="current-password" required></label>
+      <button class="btn btn-primary" type="submit">Sign in</button>
+      <p id="login-error" class="error" hidden></p>
+    </form>
+  </main>
+
+  <!-- App -->
+  <main id="app-view" class="layout" hidden>
+    <aside class="sidebar">
+      <div class="sidebar-head">
+        <h2>Projects</h2>
+        <button id="new-project" class="btn btn-small">+ New</button>
+      </div>
+      <ul id="project-list" class="project-list"></ul>
+    </aside>
+
+    <section id="content" class="content">
+      <div id="empty-state" class="card">
+        <h2>Welcome</h2>
+        <p>Each website or app that sends email is a <strong>project</strong>.
+           Select a project on the left, or create one with <strong>+ New</strong>.</p>
+      </div>
+
+      <!-- New project -->
+      <form id="create-form" class="card" hidden>
+        <h2>New project</h2>
+        <div class="grid2">
+          <label>Name <input name="name" required maxlength="100" placeholder="Portfolio"></label>
+          <label>Slug (public id) <input name="slug" required maxlength="64" pattern="[a-z0-9]+(-[a-z0-9]+)*" placeholder="portfolio"></label>
+        </div>
+        <label>Send messages to <input name="recipient_email" type="email" required placeholder="you@example.com"></label>
+        <label>Websites allowed to use the contact form <span class="hint">one per line, e.g. https://mysite.vercel.app</span>
+          <textarea name="allowed_origins" rows="3" placeholder="https://mysite.vercel.app"></textarea>
+        </label>
+        <div class="row">
+          <button class="btn btn-primary" type="submit">Create project</button>
+          <button class="btn btn-ghost" type="button" data-cancel>Cancel</button>
+        </div>
+      </form>
+
+      <!-- Project detail -->
+      <div id="project-view" hidden>
+        <div class="title-row">
+          <div>
+            <h1 id="p-name"></h1>
+            <p class="muted">Slug: <code id="p-slug"></code> <span id="p-status" class="badge"></span></p>
+          </div>
+          <div class="row">
+            <button id="toggle-active" class="btn"></button>
+            <button id="delete-project" class="btn btn-danger">Delete</button>
+          </div>
+        </div>
+
+        <div id="p-usage" class="stats"></div>
+
+        <form id="edit-form" class="card">
+          <h2>Settings</h2>
+          <label>Websites allowed to use the contact form
+            <span class="hint">One per line. Must match the address bar exactly, e.g. https://victorkabugumila.vercel.app</span>
+            <textarea name="allowed_origins" rows="4"></textarea>
+          </label>
+          <div class="grid2">
+            <label>Name <input name="name" required maxlength="100"></label>
+            <label>Send messages to <input name="recipient_email" type="email" required></label>
+            <label>Sender name <span class="hint">optional</span><input name="sender_name" maxlength="100"></label>
+            <label>Sender email <span class="hint">optional, must be on a verified Resend domain</span><input name="sender_email" type="email"></label>
+          </div>
+          <label>Description <input name="description" maxlength="1000"></label>
+          <label>Allowed recipient domains <span class="hint">transactional email only; one per line, empty = any</span>
+            <textarea name="allowed_recipient_domains" rows="2"></textarea>
+          </label>
+          <fieldset class="toggles">
+            <legend>Features</legend>
+            <label class="check"><input type="checkbox" name="contact_enabled"> Contact form</label>
+            <label class="check"><input type="checkbox" name="notifications_enabled"> Notifications to me</label>
+            <label class="check"><input type="checkbox" name="transactional_enabled"> Transactional email (to any recipient)</label>
+            <label class="check"><input type="checkbox" name="acknowledgement_enabled"> Auto-reply to contact senders</label>
+            <label class="check"><input type="checkbox" name="turnstile_enabled"> Require Cloudflare Turnstile</label>
+          </fieldset>
+          <div class="grid2">
+            <label>Rate limit (requests / minute) <input name="rate_limit" type="number" min="1" max="10000" required></label>
+            <label>Daily quota (emails / day) <input name="daily_quota" type="number" min="1" max="1000000" required></label>
+          </div>
+          <div class="row"><button class="btn btn-primary" type="submit">Save changes</button></div>
+        </form>
+
+        <div class="card">
+          <h2>Use it</h2>
+          <p>Contact forms call this endpoint from the browser. No key is needed; only the websites listed above are accepted.</p>
+          <pre><code id="snippet"></code></pre>
+        </div>
+
+        <div class="card">
+          <div class="title-row">
+            <h2>API keys</h2>
+            <button id="regen-key" class="btn">Generate new key</button>
+          </div>
+          <p class="muted">For servers only (Authorization: Bearer pmk_...). Never put a key in browser code.
+             Generating a new key revokes the old ones.</p>
+          <div id="new-key" class="newkey" hidden>
+            <p><strong>Copy this key now. It will not be shown again.</strong></p>
+            <div class="row"><code id="new-key-value"></code><button id="copy-key" class="btn btn-small">Copy</button></div>
+          </div>
+          <table><thead><tr><th>Key</th><th>Status</th><th>Created</th><th>Last used</th><th></th></tr></thead>
+            <tbody id="keys"></tbody></table>
+        </div>
+
+        <div class="card">
+          <h2>Recent emails</h2>
+          <table><thead><tr><th>When</th><th>To</th><th>Subject</th><th>Type</th><th>Status</th></tr></thead>
+            <tbody id="emails"></tbody></table>
+        </div>
+
+        <div class="card">
+          <h2>Recent contact messages</h2>
+          <div id="messages"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+</body>
+</html>

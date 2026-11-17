@@ -105,18 +105,14 @@ class ProjectService:
                 select(EmailLog.status, func.count())
                 .where(EmailLog.project_id == project.id)
                 .group_by(EmailLog.status)
-            )
-            .tuples()
-            .all()
+            ).all()
         )
         by_type = dict(
             self._db.execute(
                 select(EmailLog.email_type, func.count())
                 .where(EmailLog.project_id == project.id)
                 .group_by(EmailLog.email_type)
-            )
-            .tuples()
-            .all()
+            ).all()
         )
         today = emails_sent_today(self._db, project.id)
         contacts = (
@@ -207,7 +203,7 @@ def authenticate_api_key(db: Session, raw_key: str) -> Project | None:
     ).first()
     if row is None:
         return None
-    key, project = row.tuple()
+    key, project = row  # Row unpacks like a tuple
     now = datetime.now(UTC)
     # Throttle writes: record usage at most once a minute per key.
     if key.last_used_at is None or (now - key.last_used_at).total_seconds() > 60:

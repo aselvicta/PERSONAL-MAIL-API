@@ -20,6 +20,7 @@ messages, notifications and transactional email through one service.
 - [Resend setup](#resend-setup)
 - [Supabase setup](#supabase-setup)
 - [Deployment](#deployment)
+- [Admin web page](#admin-web-page)
 - [API usage](#api-usage)
 - [Frontend integration](#frontend-integration)
 - [Configuration reference](#configuration-reference)
@@ -202,6 +203,24 @@ Render PostgreSQL database; Supabase is the database.
 | `RESEND_WEBHOOK_SECRET` | `whsec_...` from Resend |
 | `TRUSTED_PROXY_COUNT` | `1` on Render |
 | `CORS_ORIGINS` | Usually empty (see [Frontend integration](#frontend-integration)) |
+
+## Admin web page
+
+Open `https://<your-api>/admin` (the root URL redirects there) and sign in
+with `ADMIN_EMAIL` / `ADMIN_PASSWORD`. From there you can:
+
+* create projects and edit their settings,
+* add the websites allowed to use a project's contact form (`allowed_origins`;
+  `mysite.vercel.app` is accepted and stored as `https://mysite.vercel.app`),
+* generate or revoke API keys (a new key is shown once),
+* see today's usage, recent emails with their delivery status, and recent
+  contact messages.
+
+The page is static HTML and JavaScript that calls the same admin API
+endpoints, so every check stays on the server. It uses a strict
+Content-Security-Policy (same-origin only, no inline scripts) and keeps the
+login token in `sessionStorage`, so closing the tab signs you out. Set
+`ADMIN_UI_ENABLED=false` to turn it off.
 
 ## API usage
 
@@ -401,6 +420,7 @@ All settings are environment variables; see [`.env.example`](.env.example).
 | `MAX_REQUEST_BODY_BYTES` | 524288 | Request size limit |
 | `TRUSTED_PROXY_COUNT` | 0 | Proxies appending to X-Forwarded-For |
 | `DOCS_ENABLED` | true | Serve `/docs`, `/redoc`, `/openapi.json` |
+| `ADMIN_UI_ENABLED` | true | Serve the admin web page at `/admin` |
 | `RUN_MIGRATIONS` / `WEB_CONCURRENCY` | true / 2 | Container entrypoint |
 
 ## Security model
