@@ -55,12 +55,12 @@ see what was sent and delivered.
 | | |
 |---|---|
 | ✉️ **Contact forms** | Messages from any of your sites, straight to your inbox. No secret keys in the browser. |
-| 🚀 **App emails** | Welcome, password reset and verification emails from ready-made templates, or your own content. |
-| 🔔 **Alerts to yourself** | "New sign-up", "new order", anything your app wants to tell you. |
-| 📊 **Delivery tracking** | See whether each email was sent, delivered or bounced. |
-| 🛡️ **Spam and abuse protection** | Allowed websites only, rate limits, daily quotas, a hidden bot trap and optional Cloudflare Turnstile. |
-| 🔑 **Safe by design** | Keys are stored hashed and shown once. Passwords are strongly hashed. Visitors can never change who receives your mail. |
-| 💸 **Free to run** | Works on the free plans of Render, Supabase and Resend. |
+| **App emails** | Welcome, password reset and verification emails from ready-made templates, or your own content. |
+| **Alerts to yourself** | "New sign-up", "new order", anything your app wants to tell you. |
+| **Delivery tracking** | See whether each email was sent, delivered or bounced. |
+| **Spam and abuse protection** | Allowed websites only, rate limits, daily quotas, a hidden bot trap and optional Cloudflare Turnstile. |
+| **Safe by design** | Keys are stored hashed and shown once. Passwords are strongly hashed. Visitors can never change who receives your mail. |
+| **Free to run** | Works on the free plans of Render, Supabase and Resend. |
 
 ## Get started
 
