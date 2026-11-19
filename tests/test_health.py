@@ -33,6 +33,13 @@ def test_health_reports_ok_with_database(client: TestClient, settings: Settings)
     }
 
 
+def test_health_accepts_head_requests(client: TestClient) -> None:
+    response = client.head("/health")
+
+    assert response.status_code == 200
+    assert response.content == b""
+
+
 def test_health_does_not_expose_secrets(client: TestClient, settings: Settings) -> None:
     raw = client.get("/health").text
     assert settings.JWT_SECRET_KEY.get_secret_value() not in raw

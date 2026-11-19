@@ -28,6 +28,8 @@ class HealthData(BaseModel):
     email_provider: Literal["configured", "not_configured"]
 
 
+# HEAD is allowed too: uptime monitors such as UptimeRobot send HEAD requests.
+@router.head("/health", include_in_schema=False)
 @router.get(
     "/health",
     response_model=SuccessResponse[HealthData],
